@@ -11,10 +11,13 @@
     "check:lint": "eslint --max-warnings 0 \"**/*.{ts,tsx}\"",
     "check:format": "prettier --check \"**/*.{ts,tsx,md,json}\"",
     "check:types": "tsc --noEmit",
-    "check:all": "yarn run check:lint && yarn run check:format && yarn run check:types"
+    "check:all": "yarn run check:lint && yarn run check:format && yarn run check:types",
+    "knex": "knex --knexfile src/knexfile.js"
   },
   "dependencies": {
-    "express": "^4.21.2"
+    "express": "^4.21.2",
+    "knex": "^3.1.0",
+    "pg": "^8.13.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.19.0",
