@@ -9,22 +9,24 @@ export type IGlobalCache = {
 
 const _globalCache: IGlobalCache = {};
 
-export function connect(opts: {
-  environment?: keyof typeof knexConfig;
-  globalCache?: IGlobalCache;
-}) {
-  const { globalCache = _globalCache, environment } = opts;
+export function connect(opts: { globalCache?: IGlobalCache } = {}) {
+  const { globalCache = _globalCache } = opts;
 
   if (globalCache.knex == null) {
-    globalCache.knex = knex(knexConfig[environment]);
+    globalCache.knex = knex(knexConfig);
   }
 
-  return globalCache.knex;
+  return {
+    pool: globalCache.knex,
+    globalCache,
+  };
 }
 
-export function disconnect() {
-  if (_globalCache.knex != null) {
-    _globalCache.knex.destroy();
-    _globalCache.knex = undefined;
+export async function disconnect(opts: { globalCache: IGlobalCache }) {
+  const { globalCache } = opts;
+
+  if (globalCache.knex != null) {
+    globalCache.knex.destroy();
+    globalCache.knex = undefined;
   }
 }

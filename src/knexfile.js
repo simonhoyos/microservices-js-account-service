@@ -2,52 +2,21 @@
  * @type { Object.<string, import("knex").Knex.Config> }
  */
 export default {
-  development: {
-    client: 'postgresql',
-    connection: {
-      database: 'account_service_dev',
-      user: 'postgres',
-      password: 'password',
-    },
-    pool: {
-      min: 2,
-      max: 10,
-    },
-    migrations: {
-      tableName: 'knex_migrations',
-      directory: './migrations',
-    },
+  client: 'postgresql',
+  connection: {
+    connectionString: process.env.DATABASE_URL,
+    host: 'localhost',
+    port: 5432,
+    database: 'account_service_dev',
+    user: 'postgres',
+    password: 'password',
   },
-
-  staging: {
-    client: 'postgresql',
-    connection: {
-      database: 'my_db',
-      user: 'username',
-      password: 'password',
-    },
-    pool: {
-      min: 2,
-      max: 10,
-    },
-    migrations: {
-      tableName: 'knex_migrations',
-    },
+  pool: {
+    min: 2,
+    max: 10,
   },
-
-  production: {
-    client: 'postgresql',
-    connection: {
-      database: 'my_db',
-      user: 'username',
-      password: 'password',
-    },
-    pool: {
-      min: 2,
-      max: 10,
-    },
-    migrations: {
-      tableName: 'knex_migrations',
-    },
+  migrations: {
+    tableName: 'knex_migrations',
+    directory: './migrations',
   },
 };

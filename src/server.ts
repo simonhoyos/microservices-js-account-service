@@ -1,8 +1,15 @@
-import { app } from './app.ts';
+import { createApp } from './app.ts';
 
-const port = process.env.PORT || 9000;
+createApp()
+  .then(({ app, port }) => {
+    app.listen(port, () => {
+      /* eslint-disable-next-line no-console */
+      console.log(`Server is running on http://localhost:${port}`);
+    });
+  })
+  .catch((error) => {
+    /* eslint-disable-next-line no-console */
+    console.error('Failed to start server', error);
 
-app.listen(port, () => {
-  /* eslint-disable-next-line no-console */
-  console.log(`Server is running on http://localhost:${port}`);
-});
+    throw error;
+  });

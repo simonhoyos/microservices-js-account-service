@@ -1,12 +1,40 @@
 import express from 'express';
+import type { Knex } from 'knex';
 
-// import { connect } from './database.ts';
+import { type IConfig, createConfig } from './config.ts';
+import { connect, disconnect } from './database.ts';
 
-const app = express();
-// const connectionPool = connect({ environment: 'development' });
+interface IApp extends express.Express {
+  config: IConfig;
+  services: {
+    connectionPool: Knex;
+  };
+}
 
-app.get('/', (_req, res) => {
-  res.send('Hello World!');
-});
+export async function createApp() {
+  const destroyers: (() => Promise<unknown>)[] = [];
+  const app = express() as IApp;
 
-export { app };
+  const config = createConfig();
+
+  app.config = config;
+  app.services = app.services ?? {};
+
+  const databaseConnection = connect();
+
+  app.services.connectionPool = databaseConnection.pool;
+
+  destroyers.push(() =>
+    disconnect({ globalCache: databaseConnection.globalCache }),
+  );
+
+  app.get('/', (_req, res) => {
+    res.send('Hello World!');
+  });
+
+  async function cleanup() {
+    return Promise.all(destroyers.map((destroy) => destroy()));
+  }
+
+  return { app, port: config.PORT, cleanup };
+}
