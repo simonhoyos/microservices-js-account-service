@@ -1,7 +1,9 @@
-type TypeEnum = 'root' | 'sub';
-type StatusEnum = 'new' | 'active' | 'inactive' | 'blocked';
+export type TypeEnum = 'root' | 'sub';
+export type StatusEnum = 'new' | 'active' | 'inactive' | 'blocked';
 
 export class Account {
+  static tableName = 'account';
+
   id!: string;
 
   created_at!: string;
