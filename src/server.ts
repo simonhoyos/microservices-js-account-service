@@ -9,7 +9,7 @@ createApp()
   })
   .catch((error) => {
     /* eslint-disable-next-line no-console */
-    console.error('Failed to start server', error);
+    console.error('Error while running server', error);
 
     throw error;
   });

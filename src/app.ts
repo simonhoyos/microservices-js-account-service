@@ -1,15 +1,9 @@
 import express from 'express';
-import type { Knex } from 'knex';
 
-import { type IConfig, createConfig } from './config.ts';
+import { createConfig } from './config.ts';
 import { connect, disconnect } from './database.ts';
-
-interface IApp extends express.Express {
-  config: IConfig;
-  services: {
-    connectionPool: Knex;
-  };
-}
+import { router as routerV1 } from './routes/v1/index.ts';
+import type { IApp } from './types.ts';
 
 export async function createApp() {
   const destroyers: (() => Promise<unknown>)[] = [];
@@ -28,9 +22,13 @@ export async function createApp() {
     disconnect({ globalCache: databaseConnection.globalCache }),
   );
 
-  app.get('/', (_req, res) => {
-    res.send('Hello World!');
+  app.use(express.json());
+
+  app.get('/health-check', (_req, res) => {
+    res.status(200).json({ success: true });
   });
+
+  app.use('/v1', routerV1);
 
   async function cleanup() {
     return Promise.all(destroyers.map((destroy) => destroy()));
