@@ -1,9 +1,12 @@
 import express from 'express';
 
 import { createConfig } from './config.ts';
-import { connect, disconnect } from './database.ts';
+import { connect as databaseConnect } from './database.ts';
+import { connect as kafkaConnect } from './modules/kafka.ts';
 import { router as routerV1 } from './routes/v1/index.ts';
-import type { IApp } from './types.ts';
+import type { IApp, IGlobalCache } from './types.ts';
+
+const globalCache: IGlobalCache = {};
 
 export async function createApp() {
   const destroyers: (() => Promise<unknown>)[] = [];
@@ -14,13 +17,24 @@ export async function createApp() {
   app.config = config;
   app.services = app.services ?? {};
 
-  const databaseConnection = connect();
+  const { knex, cleanup: knexCleanup } = databaseConnect({ globalCache });
 
-  app.services.connectionPool = databaseConnection.pool;
+  app.services.knex = knex;
 
-  destroyers.push(() =>
-    disconnect({ globalCache: databaseConnection.globalCache }),
-  );
+  destroyers.push(() => knexCleanup());
+
+  const { consumerModule, cleanup: kafkaCleanup } = kafkaConnect({
+    globalCache,
+    config,
+  });
+
+  destroyers.push(() => kafkaCleanup());
+
+  const { cleanup: kafkaConsumerCleanup } = await consumerModule({
+    conn: knex,
+  });
+
+  destroyers.push(() => kafkaConsumerCleanup());
 
   app.use(express.json());
 

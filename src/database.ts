@@ -1,32 +1,25 @@
-import knex, { type Knex } from 'knex';
+import knexCreate from 'knex';
 
-// @ts-expect-error - no types support with modules
+// @ts-expect-error - no types support for js modules
 import knexConfig from './knexfile.js';
+import type { IGlobalCache } from './types.ts';
 
-export type IGlobalCache = {
-  knex?: Knex;
-};
+export function connect(opts: { globalCache: IGlobalCache }) {
+  const { globalCache } = opts;
 
-const _globalCache: IGlobalCache = {};
-
-export function connect(opts: { globalCache?: IGlobalCache } = {}) {
-  const { globalCache = _globalCache } = opts;
+  const knex = globalCache.knex ?? knexCreate(knexConfig);
 
   if (globalCache.knex == null) {
-    globalCache.knex = knex(knexConfig);
+    globalCache.knex = knex;
   }
 
   return {
-    pool: globalCache.knex,
-    globalCache,
+    knex: globalCache.knex,
+
+    async cleanup() {
+      await knex.destroy();
+
+      globalCache.knex = undefined;
+    },
   };
-}
-
-export async function disconnect(opts: { globalCache: IGlobalCache }) {
-  const { globalCache } = opts;
-
-  if (globalCache.knex != null) {
-    globalCache.knex.destroy();
-    globalCache.knex = undefined;
-  }
 }

@@ -11,6 +11,11 @@ export function createConfig() {
         .enum(['development', 'staging', 'production', 'testing'])
         .default('development'),
       PORT: z.string().default('9000'),
+
+      KAFKA_CLIENT_ID: z.string(),
+      KAFKA_BROKERS: z.string(),
+      KAFKA_TOPIC: z.string(),
+      KAFKA_GROUP_ID: z.string(),
     })
     .parse(process.env);
 

@@ -12,6 +12,8 @@ export class Account {
   name!: string;
   number!: string;
 
+  count!: number;
+
   type!: TypeEnum;
   status!: StatusEnum;
 }

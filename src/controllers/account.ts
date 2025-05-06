@@ -6,7 +6,7 @@ import type { IApp } from '../types.ts';
 
 export async function getAccountById(req: Request, res: Response) {
   const app = req.app as IApp;
-  const connectionPool = app.services.connectionPool;
+  const connectionPool = app.services.knex;
 
   const account = await accountService.getAccountById({
     id: req.params.id,
@@ -24,7 +24,7 @@ export async function getAccountById(req: Request, res: Response) {
 
 export async function getAccounts(req: Request, res: Response) {
   const app = req.app as IApp;
-  const connectionPool = app.services.connectionPool;
+  const connectionPool = app.services.knex;
 
   const result = await accountService.getAllAccounts({ connectionPool });
 
@@ -38,7 +38,7 @@ export async function createAccount(req: Request, res: Response) {
   const { name, number, type, status } = req.body;
 
   const app = req.app as IApp;
-  const connectionPool = app.services.connectionPool;
+  const connectionPool = app.services.knex;
 
   const account = await accountService.createAccount({
     connectionPool,
@@ -62,7 +62,7 @@ export async function createAccount(req: Request, res: Response) {
 
 export async function deleteAccountById(req: Request, res: Response) {
   const app = req.app as IApp;
-  const connectionPool = app.services.connectionPool;
+  const connectionPool = app.services.knex;
 
   const isDeleted = await accountService.deleteAccountById({
     id: req.params.id,
@@ -86,7 +86,7 @@ export async function updateAccountById(req: Request, res: Response) {
   const { name, number, type, status } = req.body;
 
   const app = req.app as IApp;
-  const connectionPool = app.services.connectionPool;
+  const connectionPool = app.services.knex;
 
   const account = await accountService.updateAccountById({
     id: req.params.id,
