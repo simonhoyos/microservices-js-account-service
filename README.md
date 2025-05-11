@@ -11,5 +11,5 @@ This is a micro services project example based on the book hands on microservice
 2. Run `nvm use` to set the node version
 3. Run `yarn install` to install the dependencies
 4. Run `docker compose up` to start the database
-   - In some cases you may need to create the `.data` at the root manually.
-5. Run `yarn dev` to start the development server
+5. Run migrations with `yarn knex migrate:latest` (check `package.json` for the aliased script)
+6. Run `yarn dev` to start the development server
