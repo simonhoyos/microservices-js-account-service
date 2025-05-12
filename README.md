@@ -1,6 +1,6 @@
 # Accounts micro-service
 
-This is a micro services project example based on the book hands on microservices with JavaScript [GitHub](https://github.com/PacktPublishing/Hands-on-Microservices-with-JavaScript/tree/main/Ch07/accountservice/configs)
+This is a micro services project example based on the book hands on microservices with JavaScript [GitHub](https://github.com/PacktPublishing/Hands-on-Microservices-with-JavaScript/tree/main/Ch07/accountservice)
 
 ## How to run
 
@@ -16,4 +16,3 @@ This is a micro services project example based on the book hands on microservice
 7. Run migrations with `yarn knex migrate:latest` (check `package.json` for the aliased script)
 8. Run `yarn dev` to start the development server
 9. Ping the server at `http://localhost:9000/health-check` to check if it's running
-
