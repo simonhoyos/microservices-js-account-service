@@ -3,6 +3,7 @@ import express from 'express';
 import { createConfig } from './config.ts';
 import { connect as databaseConnect } from './database.ts';
 import { createLogger } from './log.ts';
+import { verify } from './middlewares/verify.ts';
 import { connect as kafkaConnect } from './modules/kafka.ts';
 import { router as routerV1 } from './routes/v1/index.ts';
 import type { IApp, IGlobalCache } from './types.ts';
@@ -47,6 +48,7 @@ export async function createApp() {
     res.status(200).json({ success: true });
   });
 
+  app.use(verify);
   app.use('/v1', routerV1);
 
   async function cleanup() {

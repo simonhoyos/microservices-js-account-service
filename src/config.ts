@@ -16,6 +16,8 @@ export function createConfig() {
       KAFKA_BROKERS: z.string(),
       KAFKA_TOPIC: z.string(),
       KAFKA_GROUP_ID: z.string(),
+
+      SECRET_ACCESS_TOKEN: z.string(),
     })
     .parse(process.env);
 
