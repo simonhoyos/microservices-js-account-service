@@ -1,6 +1,6 @@
 import winston from 'winston';
 
-import { IGlobalCache } from './types';
+import type { IGlobalCache } from './types.ts';
 
 export function createLogger(opts: { globalCache: IGlobalCache }) {
   const { globalCache } = opts;
