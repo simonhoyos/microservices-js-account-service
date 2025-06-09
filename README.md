@@ -18,6 +18,8 @@ This is a micro services project example based on the book hands on microservice
 1. Run migrations with `yarn knex migrate:latest` (check `package.json` for the aliased script)
 1. Make sure you have defined all the environment variables in the `.env` file. You can use the `.env.example` file as a reference.
 1. Make sure `KAFKA_TOPIC` is the same in both services.
+1. Navigate to `src/elk-stack` and run `docker compose up` to start logger service.
+1. Go to `http://localhost:5601/app/home` in the browser to check the observability tooling.
 1. Run `yarn dev` to start the development server
 1. Ping the server at `http://localhost:9000/health-check` to check if it's running
 1. Run the authentication micro-service project.

@@ -8,9 +8,10 @@ export async function getAccountById(req: Request, res: Response) {
   const app = req.app as IApp;
   const connectionPool = app.services.knex;
 
-  app.services.logger.info('getAccountById method called', {
-    accountId: req.params.id,
-  });
+  // Logger automated by ELK stack
+  // app.services.logger.info('getAccountById method called', {
+  //   accountId: req.params.id,
+  // });
 
   const account = await accountService.getAccountById({
     id: req.params.id,
